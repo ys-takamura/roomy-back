@@ -48,10 +48,11 @@ class Reservation < ApplicationRecord
       .where.not(id: id)
       .where("start_time < ? AND end_time > ?", end_time, start_time)
 
-    creator_overlap = base.where(user_id: user_ids_to_check)
-    participant_overlap = base.joins(:reservation_participants).where(reservation_participants: { user_id: user_ids_to_check })
+    # .or() は joins の有無が異なる Relation 同士では使えないため、別々に exists? で判定する
+    creator_overlap = base.where(user_id: user_ids_to_check).exists?
+    participant_overlap = base.joins(:reservation_participants).where(reservation_participants: { user_id: user_ids_to_check }).exists?
 
-    return unless creator_overlap.or(participant_overlap).exists?
+    return unless creator_overlap || participant_overlap
 
     errors.add(:base, "参加者のいずれかが指定された時間に別の予約が入っています")
   end

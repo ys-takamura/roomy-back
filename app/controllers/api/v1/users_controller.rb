@@ -22,7 +22,11 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
+    attrs = user_params.to_h
+    # 自分自身の更新時は権限(role)を変更できない
+    attrs.except!(:role) if @user.id == @current_user.id
+    attrs.except!(:password, :password_confirmation) if attrs[:password].blank?
+    if @user.update(attrs)
       render json: @user
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity

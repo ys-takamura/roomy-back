@@ -9,10 +9,12 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
+      resource :company, only: %i[show update], controller: "companies"
       resources :company_signups, only: :create
       resources :users, only: %i[index show create update destroy]
+      get "reservations", to: "reservations#index" # 会社単位・日付範囲で一覧
       resources :rooms, only: %i[index show create update destroy] do
-        resources :reservations, only: %i[index show create update destroy]
+        resources :reservations, only: %i[show create update destroy]
       end
       resource :session, only: %i[create destroy]
     end
