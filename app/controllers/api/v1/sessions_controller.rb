@@ -4,7 +4,8 @@ class Api::V1::SessionsController < ApplicationController
 
     if user&.authenticate(session_params[:password])
       token = encode_token({ user_id: user.id })
-      render json: { token: token, user: user }, status: :ok
+      user_json = user.as_json.merge("company_name" => user.company.name)
+      render json: { token: token, user: user_json }, status: :ok
     else
       render json: { error: "メールアドレスまたはパスワードが正しくありません" }, status: :unauthorized
     end

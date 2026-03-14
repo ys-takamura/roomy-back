@@ -1,0 +1,37 @@
+ja:
+  activerecord:
+    models:
+      reservation: 予約
+      user: ユーザー
+    attributes:
+      reservation:
+        start_time: 開始時刻
+        end_time: 終了時刻
+        title: タイトル
+        remarks: 備考
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        role: 権限
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              blank: を入力してください
+              too_short: は8文字以上で入力してください
+      messages:
+        blank: を入力してください
+        too_short: は%{count}文字以上で入力してください
+  activemodel:
+    attributes:
+      reservation:
+        start_time: 開始時刻
+        end_time: 終了時刻
+        title: タイトル
+        remarks: 備考
+      user:
+        password: パスワード
+        password_confirmation: パスワード（確認）
